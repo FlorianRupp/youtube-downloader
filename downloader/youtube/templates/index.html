@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
     <title>Karaoke Youtube Download</title>
 </head>
 <body>
-<h1>Download a Youtube-Video to Karaoke</h1>
- <form action="/" method="post">
-  <label for="song">Songname</label>
-  <input type="text" id="song" name="song"><br><br>
-  <label for="interpret">Interpret</label>
-  <input type="text" id="interpret" name="interpret"><br><br>
-  <label for="link">Youtube Link</label>
-  <input type="text" id="link" name="link"><br><br>
+<h1 class="text-center m-2">Download a Youtube-Video to Karaoke</h1>
 
-  <input type="submit" value="Submit">
-</form>
-
+<div class="container grid">
+    <form action="/" method="post">
+        <div class="row">
+            <label for="song" class="form-label">Songname</label>
+            <input type="text" id="song" name="song" class="form-control"><br><br>
+        </div>
+        <div class="row">
+            <label for="interpret" class="form-label">Interpret</label>
+            <input type="text" id="interpret" name="interpret" class="form-control"><br><br>
+        </div>
+        <div class="row ">
+            <label for="link" class="form-label">Youtube Link</label>
+            <input type="text" id="link" name="link" class="form-control"><br><br>
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary m-2">
+    </form>
+</div>
 </body>
 </html>
