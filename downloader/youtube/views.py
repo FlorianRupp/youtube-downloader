@@ -7,14 +7,15 @@ from django.http import HttpResponse
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 
-OUTPUT_DIR = "/home/ailab/karaoke/media"
+# OUTPUT_DIR = "/home/ailab/karaoke/media"
+OUTPUT_DIR = r"C:\Users\Florian Rupp\Desktop\Karaoke\media"
 
 
 def popen_and_call(on_exit, popen_args, exit_args):
     def run_in_thread(on_exit, popen_args):
         proc = subprocess.Popen(popen_args)
-        proc.wait()
-        on_exit(*exit_args)
+        # proc.wait()
+        # on_exit(*exit_args)
         return
 
     thread = threading.Thread(target=run_in_thread, args=(on_exit, popen_args))
@@ -25,7 +26,7 @@ def popen_and_call(on_exit, popen_args, exit_args):
 
 def to_discord(interpret, song):
     webhook = Webhook.from_url(
-        "https://discord.com/api/webhooks/1069963059428343918/heT2Qy7tXdw_w-RDZNwYH5ZzBaO6r5_q2wgiOMehnQKE8qCFVf_IX21KsUPirAjp_2Vg",
+        "https://ddiscord.com/api/webhooks/1069963059428343918/heT2Qy7tXdw_w-RDZNwYH5ZzBaO6r5_q2wgiOMehnQKE8qCFVf_IX21KsUPirAjp_2Vg",
         adapter=RequestsWebhookAdapter())
     webhook.send(f"Downloaded Karaoke Song: {interpret} - {song}")
 
@@ -40,7 +41,8 @@ def index(request):
             print(f"Download {song}")
 
             # subprocess.Popen(["youtube-dl", "-f", "best", "--output", f"{OUTPUT_DIR}/{interpret} - {song}.mp4", link])
-            command = ["youtube-dl", "-f", "best", "--output", f"{OUTPUT_DIR}/{interpret} - {song}.mp4", link]
+            # command = ["youtube-dl", "-f", "best", "--output", f"{OUTPUT_DIR}/{interpret} - {song}.mp4", link]
+            command = ["yt-dlp", "-f", "best", "--output", f"{OUTPUT_DIR}/{interpret} - {song}.mp4", link]
             popen_and_call(on_exit=to_discord, popen_args=command, exit_args=[interpret, song])
 
             template = loader.get_template('download_started.html')
