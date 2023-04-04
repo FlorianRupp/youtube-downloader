@@ -1,17 +1,18 @@
 # Create your views here.
+import json
+import socket
 import subprocess
 import threading
-import requests
-import socket
 
+import requests
 from discord import Webhook, RequestsWebhookAdapter
 from django.http import HttpResponse
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-import json
 
 with open("config.json", "r") as f:
     config = json.load(f)
+
 
 # OUTPUT_DIR = "/home/ailab/karaoke/media"
 
@@ -33,14 +34,11 @@ def popen_and_call(on_exit, popen_args, exit_args=None):
 
 def to_discord(interpret, song):
     webhook = Webhook.from_url(config["webhook"],
-        adapter=RequestsWebhookAdapter())
+                               adapter=RequestsWebhookAdapter())
     webhook.send(f"Downloaded Karaoke Song: {interpret} - {song}")
 
 
 def reload_music():
-    # ip = "192.168.2.123"
-    # ip = "10.60.55.202"
-    # ip = "192.168.2.107"
     ip = socket.gethostbyname(socket.gethostname())
     cookie = {"keToken": config["cookie"]}
     requests.get(f"http://{ip}/api/prefs/scan", cookies=cookie)
@@ -60,7 +58,6 @@ def index(request):
             command = ["yt-dlp", "-f", "best", "--output", f"{config['save_dir']}/{interpret} - {song}.mp4", link]
             # popen_and_call(on_exit=to_discord, popen_args=command, exit_args=[interpret, song])
             popen_and_call(on_exit=reload_music, popen_args=command)
-
 
             template = loader.get_template('download_started.html')
             return HttpResponse(template.render({}, request))
